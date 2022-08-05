@@ -1,28 +1,38 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <form>
+      <input type="text" v-model="us_login" />
+      <input type="password" v-model="us_senha" />
+      <button type="submit" @click.prevent="send">Enviar</button>
+    </form>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import axios from "axios";
 
 export default {
   name: 'App',
-  components: {
-    HelloWorld
-  }
+  data() {
+    return {
+      us_login: '',
+      us_senha: '',
+    }
+  },
+  methods: {
+    send() {
+      console.log(this.us_login, this.us_senha);
+      axios.post(
+        'http://localhost:8081/auth/login', 
+        {
+          "us_login": this.us_login,
+          "us_senha": this.us_senha
+        }
+      )
+        .then(response => console.log(response))
+        .catch(error => console.log(error));
+    }
+  }  
 }
 </script>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
